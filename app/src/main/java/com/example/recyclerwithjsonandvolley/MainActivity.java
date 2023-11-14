@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterRecycler.M
         String urlJSONFile = "https://pixabay.com/api/"
                 + "?key="
                 + pixabayKey
-                + "&q="
-                + "beach"
+                + "&q=beach"
                 + "&image_type=photo"
                 + "&orientation=horizontal"
                 + "&per_page=30"
