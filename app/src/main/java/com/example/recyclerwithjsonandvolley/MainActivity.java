@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -48,13 +51,19 @@ public class MainActivity extends AppCompatActivity implements AdapterRecycler.M
         requestQueue = Volley.newRequestQueue(this);
     }
 
-    private void parseJSON() {
+    public void newSearch(View view) {
+        arrayList.clear();
+        search = etSearch.getText().toString().trim();
+        parseJSON(search);
+    }
+
+    private void parseJSON(String search) {
         // https://pixabay.com/api/?key=40668727-138626a7bdcd0303509198d19&q=yellow+flowers&image_type=photo&pretty=true
         String pixabayKey = "40668727-138626a7bdcd0303509198d19";
         String urlJSONFile = "https://pixabay.com/api/"
                 + "?key="
                 + pixabayKey
-                + "&q=beach"
+                + "&q=" + search
                 + "&image_type=photo"
                 + "&orientation=horizontal"
                 + "&per_page=30"
@@ -106,11 +115,19 @@ public class MainActivity extends AppCompatActivity implements AdapterRecycler.M
 
         initUI();
 
-        parseJSON();
+        parseJSON(search);
     }
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, Details.class);
+
+        ModelItem modelItem = arrayList.get(position);
+
+        intent.putExtra(JSON_IMAGE_URL, modelItem.getImageUrl());
+        intent.putExtra(JSON_CREATOR, modelItem.getCreator());
+        intent.putExtra(JSON_LIKES, modelItem.getLikes());
+
+        startActivity(intent);
     }
 }
